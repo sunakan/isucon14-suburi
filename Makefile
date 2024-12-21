@@ -12,6 +12,8 @@ check-ssh: tmp/hosts.csv ## sshできるか確認
 .PHONY: download-codes
 download-codes: ## コード類をDL
 	@bash setup-scripts/download-webapp.sh
+	@echo ''
+	@bash setup-scripts/download-mysql.sh
 
 ################################################################################
 # Fileがなかった時の挙動
