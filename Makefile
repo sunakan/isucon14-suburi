@@ -24,6 +24,10 @@ download-codes: ## コード類をDL
 	@echo ''
 	@bash setup-scripts/download-nginx.sh
 
+.PHONY: build-makefile
+build-makefile: ## ${LOCAL_WEBAPP_PATH}/go/Makefile がなければ作成
+	@bash setup-scripts/build-makefile.sh
+
 ################################################################################
 # Fileがなかった時の挙動
 ################################################################################
