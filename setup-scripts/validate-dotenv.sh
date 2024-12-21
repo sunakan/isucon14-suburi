@@ -14,6 +14,9 @@ echo "リモート: golangのPATH: ${REMOTE_GOLANG_PATH}"
 echo "アプリ名: ${BUILT_APP_NAME}"
 
 while read -r server; do
+  #
+  # webappの場所
+  #
   if ssh -n "${server}" "[ -d ${REMOTE_WEBAPP_PATH} ]"; then
     echo "リモートに ${REMOTE_WEBAPP_PATH} はあります 👍(OK: REMOTE_WEBAPP_PATH)"
   else
@@ -22,12 +25,26 @@ while read -r server; do
     exit 1
   fi
 
+  #
+  # アプリ(バイナリ)の場所
+  #
   readonly BUILT_APP_PATH="${REMOTE_WEBAPP_PATH}/go/${BUILT_APP_NAME}"
   if ssh -n "${server}" "[ -f ${BUILT_APP_PATH} ]"; then
     echo "リモートに ${BUILT_APP_PATH} はあります 👍(OK: BUILT_APP_PATH)"
   else
     echo "リモートに ${BUILT_APP_PATH} がありません ❌(NG: BUILT_APP_PATH)"
     echo "ssh ${server} をしてビルドされるバイナリ名を .env に記述してください"
+    exit 1
+  fi
+
+  #
+  # systemdで動いているアプリ
+  #
+  if ssh -n "${server}" "systemctl list-units --type=service | grep '${SYSTEMD_APP_NAME}'"; then
+     echo "リモートで ${SYSTEMD_APP_NAME} はあります 👍(OK: SYSTEMD_APP_NAME)"
+  else
+    echo "リモートに ${SYSTEMD_APP_NAME} がありません ❌(NG: SYSTEMD_APP_NAME)"
+    echo "ssh ${server} をしてsystemctl list-units --type=service | grep 'isu\-'して .env に記述してください"
     exit 1
   fi
 
