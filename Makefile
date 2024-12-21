@@ -1,3 +1,6 @@
+################################################################################
+# Setup
+################################################################################
 .PHONY: create-sshconfig
 create-sshconfig: tmp/hosts.csv ## ssh用のconfigを作成
 	@bash setup-scripts/create-sshconfig.sh
@@ -5,6 +8,10 @@ create-sshconfig: tmp/hosts.csv ## ssh用のconfigを作成
 .PHONY: check-ssh
 check-ssh: tmp/hosts.csv ## sshできるか確認
 	@cat tmp/hosts.csv | cut -d',' -f1 | xargs -I{} bash -c 'echo "----[ {} ]" && ssh {} "ls"'
+
+.PHONY: download-codes
+download-codes: ## コード類をDL
+	@bash setup-scripts/download-webapp.sh
 
 ################################################################################
 # Fileがなかった時の挙動
