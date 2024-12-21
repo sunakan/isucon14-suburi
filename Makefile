@@ -14,6 +14,8 @@ download-codes: ## コード類をDL
 	@bash setup-scripts/download-webapp.sh
 	@echo ''
 	@bash setup-scripts/download-mysql.sh
+	@echo ''
+	@bash setup-scripts/download-nginx.sh
 
 ################################################################################
 # Fileがなかった時の挙動
