@@ -16,6 +16,10 @@ create-sshconfig: tmp/hosts.csv ## ssh用のconfigを作成
 check-ssh: tmp/hosts.csv ## sshできるか確認
 	@cat tmp/hosts.csv | cut -d',' -f1 | xargs -I{} bash -c 'echo "----[ {} ]" && ssh {} "ls"'
 
+.PHONY: validate-dotenv
+validate-dotenv: ## dotenvに記述されている環境変数が良さそうか検証する
+	@bash setup-scripts/validate-dotenv.sh
+
 .PHONY: download-codes
 download-codes: ## コード類をDL
 	@bash setup-scripts/download-webapp.sh
