@@ -1,6 +1,6 @@
 .PHONY: create-sshconfig
 create-sshconfig: tmp/hosts.csv ## ssh用のconfigを作成
-	@bash scripts/create-sshconfig.sh
+	@bash setup-scripts/create-sshconfig.sh
 
 .PHONY: check-ssh
 check-ssh: tmp/hosts.csv ## sshできるか確認
@@ -10,7 +10,7 @@ check-ssh: tmp/hosts.csv ## sshできるか確認
 # Fileがなかった時の挙動
 ################################################################################
 tmp/hosts.csv: ## tmp/hosts.csvをAWSと通信して作成
-	@bash scripts/create-hosts-csv.sh
+	@bash setup-scripts/create-hosts-csv.sh
 
 ################################################################################
 # Utility-Command help
