@@ -9,6 +9,8 @@ set -eu
 # OUTPUT:
 # - ~/.ssh/isucon.d/config
 # - tmp/isu-servers
+# - tmp/isu-db-servers データベース(主にMySQL)
+# - tmp/isu-reverse-proxy-servers リバースプロキシ(主にnginx)
 #
 
 readonly SSH_CONFIG_DIR_PATH="${HOME}/.ssh/isucon.d"
@@ -24,9 +26,13 @@ cat tmp/hosts.csv \
 chmod 644 "${SSH_CONFIG_PATH}"
 
 #
-# tmp/isu-serversを作成
-#
-cat tmp/hosts.csv | grep -v 'bench' | cut -d',' -f1 > tmp/isu-servers
+# 以下を作成
+# - tmp/isu-servers
+# - tmp/isu-db-servers
+# - tmp/isu-reverse-proxy-servers
+grep -v 'bench' tmp/hosts.csv | cut -d',' -f1 > tmp/isu-servers
+head -n1 tmp/isu-servers > tmp/isu-db-servers
+head -n1 tmp/isu-servers > tmp/isu-reverse-proxy-servers
 
 #
 # 通知
