@@ -14,7 +14,6 @@ echo "リモートのwebappへのPATH: ${REMOTE_WEBAPP_PATH}"
 echo "ローカルのwebappへのPATH: ${LOCAL_WEBAPP_PATH}"
 echo '-------'
 
-
 #
 # DL済みなら、DLしない
 #
@@ -25,11 +24,17 @@ if [ -d "${LOCAL_WEBAPP_PATH}" ]; then
 fi
 
 #
+# 有無チェック
+#
+head -n1 tmp/isu-servers | xargs -I{} ssh {} "[ -d ${REMOTE_WEBAPP_PATH} ]" || \
+(echo "ssh先に、 ${REMOTE_WEBAPP_PATH} がありません。 ssh して確認してください" && exit 1)
+
+#
 # webapp
 # .envにて、REMOTE_WEBAPP_PATHを設定していること
 # 例: REMOTE_WEBAPP_PATH=/home/isucon/webapp
 #
-cat tmp/isu-servers | head -n1 | xargs -I{} rsync -az \
+head -n1 tmp/isu-servers | xargs -I{} rsync -az \
   --exclude 'php' \
   --exclude 'perl' \
   --exclude 'rust' \
