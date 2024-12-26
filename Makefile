@@ -5,6 +5,10 @@
 deploy-mysql: ## MySQLの設定をデプロイ
 	@bash kaizen-scripts/deploy-mysql.sh
 
+.PHONY: deploy-nginx
+deploy-nginx: ## Nginxの設定をデプロイ
+	@bash kaizen-scripts/deploy-nginx.sh
+
 ################################################################################
 # Setup
 ################################################################################
