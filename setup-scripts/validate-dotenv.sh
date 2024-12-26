@@ -11,6 +11,7 @@ set -euo pipefail
 #
 echo "-------[ $(basename "${0}") ]"
 echo "webappへのPATH: ${REMOTE_WEBAPP_PATH}"
+echo "goのアプリのPATH: ${REMOTE_APP_PATH}"
 echo "アプリ(バイナリ): ${BUILT_APP_NAME}"
 echo "systemdで動いているアプリ: ${SYSTEMD_APP_NAME}"
 echo "golangのPATH: ${REMOTE_GOLANG_PATH}"
@@ -29,9 +30,20 @@ while read -r server; do
   fi
 
   #
+  # goのアプリの場所
+  #
+  if ssh -n "${server}" "[ -d ${REMOTE_APP_PATH} ]"; then
+    echo "OK: REMOTE_APP_PATH=${REMOTE_APP_PATH}"
+  else
+    echo "NG: REMOTE_APP_PATH=${REMOTE_APP_PATH}"
+    echo "ssh ${server} をしてgoアプリディレクトリへのPATHを .env に記述してください"
+    exit 1
+  fi
+
+  #
   # アプリ(バイナリ)の場所
   #
-  readonly BUILT_APP_PATH="${REMOTE_WEBAPP_PATH}/go/${BUILT_APP_NAME}"
+  readonly BUILT_APP_PATH="${REMOTE_APP_PATH}/${BUILT_APP_NAME}"
   if ssh -n "${server}" "[ -f ${BUILT_APP_PATH} ]"; then
     echo "OK: BUILT_APP_PATH=${BUILT_APP_PATH}"
   else
