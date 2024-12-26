@@ -36,6 +36,10 @@ build-makefile: ## ${LOCAL_WEBAPP_PATH}/go/Makefile がなければ作成
 setup-nginx-conf-with-json-log-format: ## json log format付きのnginx.confをsetup
 	@bash setup-scripts/setup-nginx-conf-with-json-log-format.sh
 
+.PHONY: setup-mysqld-cnf-with-slowquery-log
+setup-mysqld-cnf-with-slowquery-log: ## slowquery logを有効化したmysqld.cnfをsetup
+	@bash setup-scripts/setup-mysqld-cnf-with-slowquery-log.sh
+
 ################################################################################
 # Fileがなかった時の挙動
 ################################################################################
