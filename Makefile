@@ -32,6 +32,10 @@ download-codes: ## コード類をDL
 build-makefile: ## ${LOCAL_WEBAPP_PATH}/go/Makefile がなければ作成
 	@bash setup-scripts/build-makefile.sh
 
+.PHONY: setup-nginx-conf-with-json-log-format
+setup-nginx-conf-with-json-log-format: ## json log format付きのnginx.confをsetup
+	@bash setup-scripts/setup-nginx-conf-with-json-log-format.sh
+
 ################################################################################
 # Fileがなかった時の挙動
 ################################################################################
