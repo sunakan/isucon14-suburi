@@ -9,6 +9,12 @@ deploy-mysql: ## MySQLの設定をデプロイ
 deploy-nginx: ## Nginxの設定をデプロイ
 	@bash kaizen-scripts/deploy-nginx.sh
 
+.PHONY: clean-logs
+clean-logs: ## clean logs
+	@bash kaizen-scripts/clean-nginx-logs.sh
+	@echo ''
+	@bash kaizen-scripts/clean-mysql-logs.sh
+
 ################################################################################
 # Setup
 ################################################################################
