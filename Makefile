@@ -40,6 +40,10 @@ setup-nginx-conf-with-json-log-format: ## json log format付きのnginx.confをs
 setup-mysqld-cnf-with-slowquery-log: ## slowquery logを有効化したmysqld.cnfをsetup
 	@bash setup-scripts/setup-mysqld-cnf-with-slowquery-log.sh
 
+.PHONY: setup-mysql-user
+setup-mysql-user: ## mysql userを作成
+	@bash setup-scripts/setup-mysql-user.sh
+
 ################################################################################
 # Fileがなかった時の挙動
 ################################################################################
