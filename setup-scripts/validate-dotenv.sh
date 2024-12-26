@@ -9,19 +9,21 @@ set -euo pipefail
 #
 # 通知
 #
-echo '-------[ validate-dotenv.sh ]'
-echo "リモート: webappへのPATH: ${REMOTE_WEBAPP_PATH}"
-echo "リモート: golangのPATH: ${REMOTE_GOLANG_PATH}"
-echo "アプリ名: ${BUILT_APP_NAME}"
+echo "-------[ $(basename "${0}") ]"
+echo "webappへのPATH: ${REMOTE_WEBAPP_PATH}"
+echo "アプリ(バイナリ): ${BUILT_APP_NAME}"
+echo "systemdで動いているアプリ: ${SYSTEMD_APP_NAME}"
+echo "golangのPATH: ${REMOTE_GOLANG_PATH}"
+echo '-------'
 
 while read -r server; do
   #
   # webappの場所
   #
   if ssh -n "${server}" "[ -d ${REMOTE_WEBAPP_PATH} ]"; then
-    echo "リモートに ${REMOTE_WEBAPP_PATH} はあります 👍(OK: REMOTE_WEBAPP_PATH)"
+    echo "OK: REMOTE_WEBAPP_PATH=${REMOTE_WEBAPP_PATH}"
   else
-    echo "リモートに ${REMOTE_WEBAPP_PATH} がありません ❌(NG: REMOTE_WEBAPP_PATH)"
+    echo "NG: REMOTE_WEBAPP_PATH=${REMOTE_WEBAPP_PATH}"
     echo "ssh ${server} をしてwebappへのPATHを .env に記述してください"
     exit 1
   fi
@@ -31,9 +33,9 @@ while read -r server; do
   #
   readonly BUILT_APP_PATH="${REMOTE_WEBAPP_PATH}/go/${BUILT_APP_NAME}"
   if ssh -n "${server}" "[ -f ${BUILT_APP_PATH} ]"; then
-    echo "リモートに ${BUILT_APP_PATH} はあります 👍(OK: BUILT_APP_PATH)"
+    echo "OK: BUILT_APP_PATH=${BUILT_APP_PATH}"
   else
-    echo "リモートに ${BUILT_APP_PATH} がありません ❌(NG: BUILT_APP_PATH)"
+    echo "NG: BUILT_APP_PATH=${BUILT_APP_PATH}"
     echo "ssh ${server} をしてビルドされるバイナリ名を .env に記述してください"
     exit 1
   fi
@@ -42,9 +44,9 @@ while read -r server; do
   # systemdで動いているアプリ
   #
   if ssh -n "${server}" "systemctl list-units --type=service | grep '${SYSTEMD_APP_NAME}'"; then
-     echo "リモートで ${SYSTEMD_APP_NAME} はあります 👍(OK: SYSTEMD_APP_NAME)"
+     echo "OK: SYSTEMD_APP_NAME=${SYSTEMD_APP_NAME}"
   else
-    echo "リモートに ${SYSTEMD_APP_NAME} がありません ❌(NG: SYSTEMD_APP_NAME)"
+     echo "NG: SYSTEMD_APP_NAME=${SYSTEMD_APP_NAME}"
     echo "ssh ${server} をしてsystemctl list-units --type=service | grep 'isu\-'して .env に記述してください"
     exit 1
   fi
@@ -53,9 +55,9 @@ while read -r server; do
   # Golangの場所
   #
   if ssh -n "${server}" "[ -d ${REMOTE_GOLANG_PATH} ]"; then
-     echo "リモートに ${REMOTE_GOLANG_PATH} はあります 👍(OK: REMOTE_GOLANG_PATH)"
+     echo "OK: REMOTE_GOLANG_PATH=${REMOTE_GOLANG_PATH}"
   else
-    echo "リモートに ${REMOTE_GOLANG_PATH} がありません ❌(NG: REMOTE_GOLANG_PATH)"
+     echo "NG: REMOTE_GOLANG_PATH=${REMOTE_GOLANG_PATH}"
     echo "ssh ${server} をしてgolangへのPATHを .env に記述してください"
     exit 1
   fi
